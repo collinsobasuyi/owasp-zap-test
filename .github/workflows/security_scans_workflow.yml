@@ -30,8 +30,26 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-  zap_scan:
+  sonar_scan:
     needs: snyk_scan
+    runs-on: ubuntu-latest
+    name: Sonarcloud Vulnerability Scan
+    steps:
+    - uses: actions/checkout@master
+    - name: Set up JDK 17
+      uses: actions/setup-java@master
+      with:
+        java-version: '17'
+        distribution: 'adopt'
+        cache: maven
+    - name: Build with Maven cloud
+      run:  mvn -B verify sonar:sonar -Dsonar.projectKey=devsecopsjavaproject -Dsonar.organization=devsecopsjavaproject -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=$SONAR_TOKEN
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  zap_scan:
+    needs: sonar_scan
     runs-on: ubuntu-latest
     name: OWASP ZAP Web Application Scan
     steps:

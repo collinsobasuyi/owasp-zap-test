@@ -8,13 +8,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        branches: [main, development] # Example branches, adjust as necessary
+        branches: [master] # Example branches, adjust as necessary
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@master
         with:
           ref: ${{ matrix.branches }}
           fetch-depth: 0
-      - uses: gitleaks/gitleaks-action@v1
+      - uses: gitleaks/gitleaks-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -35,9 +35,9 @@ jobs:
     runs-on: ubuntu-latest
     name: OWASP ZAP Web Application Scan
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@master
       - name: ZAP Scan
-        uses: zaproxy/action-full-scan@v0.9.0
+        uses: zaproxy/action-full-scan@master
         with:
           docker_name: 'owasp/zap2docker-stable'
           target: 'http://testphp.vulnweb.com/'

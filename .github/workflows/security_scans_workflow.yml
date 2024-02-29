@@ -6,15 +6,16 @@ jobs:
   gitleaks_scan:
     name: Gitleaks Secret Scan
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        branches: [master] # Example branches, adjust as necessary
+    # strategy:
+    #   matrix:
+    #     branches: [master] # Example branches, adjust as necessary
     steps:
       - uses: actions/checkout@master
-        with:
-          ref: ${{ matrix.branches }}
-          fetch-depth: 0
-      - uses: gitleaks/gitleaks-action@master
+        # with:
+        #   ref: ${{ matrix.branches }}
+        #   fetch-depth: 0
+      - name: Run git leaks to check for secrets
+        uses: gitleaks/gitleaks-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
